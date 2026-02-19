@@ -1,74 +1,114 @@
-# BlogGo
+# BlogGo – Production-Ready Next.js Website
 
-A production-ready blogging platform built with React, Vite, Tailwind CSS, and Express.
+A modern blogging platform built with **Next.js 14 App Router**, **TypeScript**, and **Tailwind CSS**.
 
-## Features
+## 🚀 Quick Start
 
-- **Modern Design**: Premium look with soft shadows, rounded corners, and subtle gradients.
-- **Responsive**: Mobile-first approach using Tailwind CSS.
-- **Blog Engine**:
-  - Full markdown support (mock data)
-  - Image galleries with lightbox
-  - Author profiles
-- **Mock Editor**: Local-state based editor for demonstration.
-- **Pages**:
-  - Home
-  - Features
-  - Pricing
-  - Support
-  - Legal (Privacy, Terms)
+```bash
+# Install dependencies
+npm install
 
-## Tech Stack
+# Start development server
+npm run dev
+# → http://localhost:3000
 
-- **Frontend**: React, Vite, Wouter (Routing), Tailwind CSS, Framer Motion
-- **Backend**: Express, Drizzle ORM, PostgreSQL
-- **Language**: TypeScript
+# Build for production
+npm run build
 
-## getting Started
+# Start production server
+npm run start
 
-1. **Install Dependencies**:
-   ```bash
-   npm install
-   ```
+# Run linter
+npm run lint
+```
 
-2. **Database Setup**:
-   The project uses a PostgreSQL database. Ensure `DATABASE_URL` is set in your environment.
-   
-   Push the schema to the database:
-   ```bash
-   npm run db:push
-   ```
+## 📁 Project Structure
 
-3. **Start Development Server**:
-   ```bash
-   npm run dev
-   ```
-   The server will start on port 5000.
+```
+src/
+├── app/                        # Next.js App Router pages
+│   ├── layout.tsx              # Root layout (Header + Footer)
+│   ├── page.tsx                # / Home page
+│   ├── features/page.tsx       # /features
+│   ├── pricing/page.tsx        # /pricing
+│   ├── support/page.tsx        # /support (Apple-compliant)
+│   ├── privacy/page.tsx        # /privacy
+│   ├── terms/page.tsx          # /terms
+│   ├── profile/[username]/
+│   │   ├── page.tsx            # /profile/[username] – demo profile
+│   │   └── blog/[slug]/
+│   │       └── page.tsx        # /profile/[username]/blog/[slug] – blog post
+│   ├── editor/[slug]/
+│   │   └── page.tsx            # /editor/[slug] – mock editor
+│   ├── not-found.tsx           # 404 page
+│   ├── loading.tsx             # Global loading skeleton
+│   ├── error.tsx               # Error boundary
+│   └── globals.css             # Global styles + design tokens
+│
+├── components/
+│   ├── ui/                     # Design system components
+│   │   ├── Button.tsx          # primary / secondary / ghost / destructive
+│   │   ├── Card.tsx            # Soft shadow card with hover
+│   │   ├── Badge.tsx           # Colored pill labels
+│   │   ├── Input.tsx           # Accessible labeled input
+│   │   ├── Accordion.tsx       # ARIA-compliant FAQ accordion
+│   │   ├── Modal.tsx           # Focus-trapped dialog
+│   │   ├── Container.tsx       # Max-width centered wrapper
+│   │   └── SectionHeader.tsx   # Eyebrow + title + subtitle
+│   ├── layout/
+│   │   ├── Header.tsx          # Sticky nav with mobile menu
+│   │   └── Footer.tsx          # Footer with link groups
+│   └── blog/
+│       └── Lightbox.tsx        # Image lightbox with keyboard nav
+│
+└── lib/
+    └── mock-data.ts            # 5 demo blog posts + author data
+```
 
-## Project Structure
+## ✏️ Where to Edit Content
 
-- `client/`: Frontend React application
-  - `src/components/ui/`: Reusable UI components (Button, Card, Input, etc.)
-  - `src/pages/`: Application pages
-  - `src/hooks/`: Custom hooks (data fetching, etc.)
-- `server/`: Backend Express application
-  - `routes.ts`: API endpoints
-  - `storage.ts`: Database access layer
-- `shared/`: Shared types and schema
-  - `schema.ts`: Database schema
-  - `routes.ts`: API contract
+| What | File | Variable/Section |
+|---|---|---|
+| Blog posts | `src/lib/mock-data.ts` | `mockBlogs` array |
+| Author profile | `src/lib/mock-data.ts` | `demoAuthor` object |
+| Support email | `src/app/support/page.tsx` | `SUPPORT_EMAIL` constant (line 12) |
+| Pricing plans | `src/app/pricing/page.tsx` | `plans` array |
+| Features list | `src/app/features/page.tsx` | `featureGroups` array |
+| Nav links | `src/components/layout/Header.tsx` | `navLinks` array |
+| Footer links | `src/components/layout/Footer.tsx` | `footerLinks` object |
+| Privacy policy | `src/app/privacy/page.tsx` | Page content + `LAST_UPDATED` |
+| Terms of service | `src/app/terms/page.tsx` | Page content + `LAST_UPDATED` |
+| Site metadata | `src/app/layout.tsx` | `metadata` export |
 
-## Editing Content
+## 🎨 Design System
 
-- **Copy/Text**: Most text content is in the page components in `client/src/pages/`.
-- **Pricing**: Pricing plans are defined in `client/src/pages/pricing.tsx`.
-- **Support Email**: Defined in `client/src/pages/support.tsx`.
-- **Mock Data**: Initial blog posts are seeded in `server/routes.ts`. To modify them, edit the `seedDatabase` function and restart the server (or clear the DB).
+CSS variables are defined in `src/app/globals.css`:
 
-## Scripts
+```css
+--accent: #7c3aed        /* Primary violet */
+--bg: #0a0a0f            /* Page background */
+--bg-card: #13131a       /* Card background */
+--text-primary: #f0f0f8  /* Headings */
+--text-secondary: #9090b0 /* Body text */
+```
 
-- `npm run dev`: Start the development server
-- `npm run build`: Build the frontend for production
-- `npm run start`: Start the production server
-- `npm run lint`: Run ESLint
-- `npm run db:push`: Push schema changes to the database
+## 🔗 Demo Routes
+
+| URL | Description |
+|---|---|
+| `/` | Home page |
+| `/features` | Features grid |
+| `/pricing` | Pricing plans |
+| `/support` | Contact form + FAQ |
+| `/privacy` | Privacy policy |
+| `/terms` | Terms of service |
+| `/profile/demo` | Demo author profile |
+| `/profile/demo/blog/getting-started-with-nextjs-14` | Sample blog post |
+| `/editor/my-first-post` | Mock editor (saves to localStorage) |
+
+## 📝 Notes
+
+- **No paid APIs or environment variables required** — everything runs offline
+- **Editor** saves drafts to `localStorage` keyed by slug
+- **Images** use `picsum.photos` (free, no API key needed)
+- **Support email** is a placeholder — update `SUPPORT_EMAIL` in `support/page.tsx`
